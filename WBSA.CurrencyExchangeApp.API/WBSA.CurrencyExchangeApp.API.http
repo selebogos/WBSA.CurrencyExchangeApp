@@ -1,0 +1,6 @@
+@WBSA.CurrencyExchangeApp.API_HostAddress = http://localhost:5270
+
+GET {{WBSA.CurrencyExchangeApp.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
