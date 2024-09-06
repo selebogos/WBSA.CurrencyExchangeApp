@@ -1,0 +1,29 @@
+version: '3.4'
+
+networks:
+  backend:
+
+services:
+  currencyexchangedb: 
+    container_name: currencyexchange-db
+    image: mysql:9.0.1
+    environment :
+        - MYSQL_ROOT_PASSWORD=my-secret-pw
+    ports :
+       - 9006:3306
+    networks :
+       - backend
+  wbsa.currencyexchangeapp.api:
+    container_name: currency-exchange-api
+    image: ${DOCKER_REGISTRY-}wbsacurrencyexchangeappapi
+    build:
+      context: .
+      dockerfile: WBSA.CurrencyExchangeApp.API\Dockerfile
+    networks: 
+        - backend
+    ports :
+        - 9005:80
+    environment :
+        - DB_HOST=currencyexchangedb
+        - DB_NAME=currency_exchange
+        - DB_ROOT_PASSWORD=my-secret-pw

@@ -25,7 +25,7 @@ namespace WBSA.CurrencyExchangeApp.API.Controllers
         public async Task<IActionResult> Convert(CurrencyExchangeRequest request)
         {
             var currencyRequest=_mapper.Map<CurrencyExchangeRequestDto>(request);
-            var item = await _currencyExchangeService.ConvertAsync(currencyRequest);
+            var item = await _currencyExchangeService.ConvertAndSaveAsync(currencyRequest);
             return Ok(item);
         }
     }
