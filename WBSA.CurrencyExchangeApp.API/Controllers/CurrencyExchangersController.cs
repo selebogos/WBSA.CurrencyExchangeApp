@@ -10,8 +10,7 @@ namespace WBSA.CurrencyExchangeApp.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class CurrencyExchangersController(ICurrencyExchangeService _currencyExchangeService,
-         IMapper _mapper)
-        : ControllerBase
+         IMapper _mapper): ControllerBase
     {
 
         [HttpGet("history")]
@@ -21,8 +20,8 @@ namespace WBSA.CurrencyExchangeApp.API.Controllers
             return Ok(item);
         }
 
-        [HttpGet("convert")]
-        public async Task<IActionResult> Convert(CurrencyExchangeRequest request)
+        [HttpPost("convert")]
+        public async Task<IActionResult> Convert([FromBody] CurrencyExchangeRequest request)
         {
             var currencyRequest=_mapper.Map<CurrencyExchangeRequestDto>(request);
             var item = await _currencyExchangeService.ConvertAndSaveAsync(currencyRequest);

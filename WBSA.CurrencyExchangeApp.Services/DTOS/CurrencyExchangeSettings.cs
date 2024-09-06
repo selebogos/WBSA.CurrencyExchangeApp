@@ -10,5 +10,7 @@ namespace WBSA.CurrencyExchangeApp.Services.DTOS
     {
         public string CurrrencyAPIKey { get; set; }
         public string HostUrl { get; set; }
+        public string ConvertEndPoint { get; set; }
+        public string CacheKey { get; set; }
     }
 }

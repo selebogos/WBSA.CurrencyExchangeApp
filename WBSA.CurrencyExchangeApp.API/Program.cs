@@ -22,6 +22,11 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
 builder.Services.AddMapster();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
+    //options.InstanceName = "CurrencyExchange_";
+});
 builder.Services.AddCurrencyExchangeServices();
 builder.Services.AddCurrencyExchangeSettings(builder.Configuration);
 builder.Services.AddDataServices(builder.Configuration);
@@ -38,6 +43,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+//app.UseAuthorization();
+
 
 // global cors policy
 app.UseCors(x => x
