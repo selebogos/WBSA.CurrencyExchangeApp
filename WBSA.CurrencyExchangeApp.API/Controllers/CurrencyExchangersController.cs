@@ -14,9 +14,9 @@ namespace WBSA.CurrencyExchangeApp.API.Controllers
     {
 
         [HttpGet("history")]
-        public async Task<IActionResult> GetByDate(string date)
+        public async Task<IActionResult> GetAll()
         {
-            var item = await _currencyExchangeService.GetAsync(date);
+            var item = await _currencyExchangeService.GetAllAsync();
             return Ok(item);
         }
 

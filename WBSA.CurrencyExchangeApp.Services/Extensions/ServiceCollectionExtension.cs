@@ -17,9 +17,13 @@ namespace WBSA.CurrencyExchangeApp.Services.Extensions
         }
         public static void AddCurrencyExchangeServices(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddScoped<ICurrencyExchangeService, CurrencyExchangeService>();
             services.AddScoped<IRedisCacheService, RedisCacheService>();
 
+           
 
 
         }

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WBSA.CurrencyExchangeApp.Data.Entities
 {
@@ -13,15 +10,17 @@ namespace WBSA.CurrencyExchangeApp.Data.Entities
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public string BaseCurrency { get; set; }
-        [Required]
-        public string TargetCurrency { get; set; }
-        [Required]
-        public decimal Amount { get; set; }
-        [Required]
-        public double ExchangeRate { get; set; }
-        [Required]
-        public DateTime Date { get; set; }
+        public int InformationId { get; set; }
+        public int QueryId { get; set; }
+        public bool Success { get; set; }
+        public string Terms { get; set; }
+        public string Privacy { get; set; }
+        public double Result { get; set; }
+
+        [ForeignKey("InformationId")]
+        public virtual Information Info { get; set; }
+
+        [ForeignKey("QueryId")]
+        public virtual Query Query { get; set; }
     }
 }

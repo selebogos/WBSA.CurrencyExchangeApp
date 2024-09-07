@@ -9,11 +9,11 @@ namespace WBSA.CurrencyExchangeApp.Services.DTOS
 {
     public class CurrencyExchangeResponseDto
     {
-        public bool success { get; set; }
-        public string terms { get; set; }
-        public string privacy { get; set; }
-        public QueryDto query { get; set; }
-        public InfoDto info { get; set; }
-        public double result { get; set; }
+        public bool Success { get; set; }
+        public string Terms { get; set; }
+        public string Privacy { get; set; }
+        public QueryDto Query { get; set; }
+        public InfoDto Info { get; set; }
+        public double Result { get; set; }
     }
 }

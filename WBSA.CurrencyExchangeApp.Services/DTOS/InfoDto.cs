@@ -8,7 +8,7 @@ namespace WBSA.CurrencyExchangeApp.Services.DTOS
 {
     public class InfoDto
     {
-        public int timestamp { get; set; }
-        public double quote { get; set; }
+        public int Timestamp { get; set; }
+        public double Quote { get; set; }
     }
 }

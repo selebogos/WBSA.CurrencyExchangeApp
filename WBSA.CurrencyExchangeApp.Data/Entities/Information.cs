@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,9 @@ namespace WBSA.CurrencyExchangeApp.Data.Entities
     [Table("Information")]
     public class Information
     {
-        public int timestamp { get; set; }
-        public double quote { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public int Timestamp { get; set; }
+        public double Quote { get; set; }
     }
 }

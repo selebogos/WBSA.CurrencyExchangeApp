@@ -28,6 +28,8 @@ namespace WBSA.CurrencyExchangeApp.Data
         }
 
         public DbSet<CurrencyExchangeHistory> CurrencyExchangeHistory { get; set; }
+        public DbSet<Information> Info { get; set; }
+        public DbSet<Query> Query { get; set; }
 
     }
 }

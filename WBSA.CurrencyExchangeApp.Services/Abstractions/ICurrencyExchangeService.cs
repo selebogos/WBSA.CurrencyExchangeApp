@@ -9,7 +9,7 @@ namespace WBSA.CurrencyExchangeApp.Services.Abstractions
 {
     public interface ICurrencyExchangeService
     {
-        Task<IEnumerable<CurrencyExchangeResponseDto>> GetAsync();
+        Task<List<CurrencyExchangeResponseDto>> GetAllAsync();
         Task<CurrencyExchangeResponseDto> ConvertAndSaveAsync(CurrencyExchangeRequestDto request);
     }
 }
