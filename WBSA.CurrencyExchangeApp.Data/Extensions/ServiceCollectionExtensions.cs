@@ -15,11 +15,11 @@ namespace WBSA.CurrencyExchangeApp.Data.Extensions
 
             string connnectionString = $"Server={dbHost};port=3306; Database={dbName}; Uid=root; Pwd={dbPassword};";
 
-            services.AddDbContext<CurrencyExchangeDbContext>(opt =>
-               opt.UseMySQL(configuration.GetConnectionString("CurrencyExchangeDatabase")));
+            //services.AddDbContext<CurrencyExchangeDbContext>(opt =>
+               //opt.UseMySQL(configuration.GetConnectionString("CurrencyExchangeDatabase")));
 
-           // services.AddDbContext<CurrencyExchangeDbContext>(opt =>
-              //  opt.UseMySQL(connnectionString));
+            services.AddDbContext<CurrencyExchangeDbContext>(opt =>
+                opt.UseMySQL(connnectionString));
         }
         public static void InitializeDatabase(this IApplicationBuilder app)
         {

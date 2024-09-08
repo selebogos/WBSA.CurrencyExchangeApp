@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using WBSA.CurrencyExchangeApp.Data;
@@ -34,25 +35,15 @@ namespace WBSA.CurrencyExchangeApp.Services
         {
             //Validate Currency codes and amount
             if (!CurrencyValidator.IsValidCurrencyCode(request.BaseCurrency))
-            {
                 throw new CurrencyExchangeException($"{request.BaseCurrency} is not a valid currency code.");
-            }
             else if (!CurrencyValidator.IsValidCurrencyCode(request.TargetCurrency))
-            {
                 throw new CurrencyExchangeException($"{request.TargetCurrency} is not a valid currency code.");
-            }
-            else if (!Decimal.TryParse(request.Amount,out decimal amountToConvert))
-            {
-                throw new CurrencyExchangeException($" The amount must be a number greater than 0.0");
-            }
-            else if (Convert.ToDecimal(request.Amount)<=0)
-            {
-                throw new CurrencyExchangeException($" The amount must be greater than 0.0");
-            }
+            else if (!decimal.TryParse(request.Amount,out decimal amountToConvert))
+                throw new CurrencyExchangeException($" The amount must be a number greater than 0.00");
+            else if (amountToConvert <= 0)
+                throw new CurrencyExchangeException($" The amount must be greater than 0.00");
             else if (request.TargetCurrency== request.BaseCurrency)
-            {
                 throw new CurrencyExchangeException($"target currency code must be different from base currency code.");
-            }
             var cacheKey = CreateInstance(request);
 
            bool isFound=hasInstanceId(cacheKey);
@@ -107,12 +98,13 @@ namespace WBSA.CurrencyExchangeApp.Services
                 httpClient.BaseAddress = new Uri(_currencyExchangeSettings.HostUrl);
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                httpClient.Timeout = TimeSpan.FromSeconds(10); // Set timeout for 10 seconds
 
                 var response = await httpClient.GetAsync($"{_currencyExchangeSettings.ConvertEndPoint}?from={request.BaseCurrency}&to={request.TargetCurrency}&amount={request.Amount}&access_key={_currencyExchangeSettings.CurrrencyAPIKey}");
                 if (!response.IsSuccessStatusCode)
                     throw new CurrencyExchangeException($"Cannot convert currency, status code: {response.StatusCode}");
                 string jsonString = await response.Content.ReadAsStringAsync();
-                //var data = await response.Content.ReadFromJsonAsync<CurrencyExchangeResponseDto>() ?? null;
+   
                 var data = JsonConvert.DeserializeObject<CurrencyExchangeResponseDto>(jsonString) ?? null;
                 if (data is null)
                     throw new CurrencyExchangeException($"Cannot convert currency");
@@ -123,7 +115,7 @@ namespace WBSA.CurrencyExchangeApp.Services
 
                 await SaveAsync(currencyExchangeHistory);
                 SetInstance(cacheKey);
-                _cache.SetCachedData(cacheKey, data, TimeSpan.FromSeconds(20));
+                _cache.SetCachedData(cacheKey, data, TimeSpan.FromMinutes(15));
 
                 return data?? new();
             }

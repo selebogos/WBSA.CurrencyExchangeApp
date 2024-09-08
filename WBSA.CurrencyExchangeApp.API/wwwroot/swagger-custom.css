@@ -1,0 +1,61 @@
+﻿.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+    /* Sidebar links */
+    .sidebar a {
+        display: block;
+        color: black;
+        padding: 18.5px;
+        text-decoration: none;
+    }
+
+        /* Active/current link */
+        .sidebar a.active {
+            background-color: #f1f1f1;
+            color: black;
+        }
+
+        /* Links on mouse-over */
+        .sidebar a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+#swagger-ui {
+    margin-left: 200px;
+    height: 1000px;
+}
+
+.swagger-ui .topbar {
+    background-color: #e03d0b;
+    border-bottom: 3px solid #e03d0b;
+}
+
+.topbar-wrapper img[alt="Swagger UI"], .topbar-wrapper span {
+    visibility: hidden;
+}
+.swagger-ui .topbar .download-url-wrapper .select-label select {
+ 
+    display: none;
+}
+
+
+.swagger-ui .topbar .wrapper .topbar-wrapper .link {
+    content: url('logo.svg');
+    align-items: center;
+    color: #fff;
+    flex: 1;
+    font-family: sans-serif;
+    font-size: 1.5em;
+    font-weight: 700;
+    max-width: 100px;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+}

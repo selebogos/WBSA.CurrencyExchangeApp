@@ -3,16 +3,23 @@ version: '3.4'
 networks:
   backend:
 
+volumes:
+  mysql-data:
+  redis-data:
+
 services:
   currencyexchangedb: 
     container_name: currencyexchange-db
-    image: mysql:9.0.1
+    image: mysql:latest  
+    restart: always   
     environment :
         - MYSQL_ROOT_PASSWORD=my-secret-pw
     ports :
        - 9006:3306
     networks :
        - backend
+    volumes:
+      - mysql-data:/var/lib/mysql  
   wbsa.currencyexchangeapp.api:
     container_name: currency-exchange-api
     image: ${DOCKER_REGISTRY-}wbsacurrencyexchangeappapi
@@ -22,8 +29,23 @@ services:
     networks: 
         - backend
     ports :
-        - 9005:80
+        - 8080:80
+    depends_on:
+      - currencyexchangedb
+      - redis
     environment :
         - DB_HOST=currencyexchangedb
         - DB_NAME=currency_exchange
         - DB_ROOT_PASSWORD=my-secret-pw
+        - Redis__ConnectionString=redis:6379 
+  redis:
+    image: redis:latest                           # Redis cache image
+    ports:
+      - "6379:6379"                               # Expose Redis on port 6379
+    networks:
+      - backend
+    volumes:
+      - redis-data:/data
+  
+
+ 
