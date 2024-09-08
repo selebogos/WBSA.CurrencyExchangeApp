@@ -11,6 +11,6 @@ namespace WBSA.CurrencyExchangeApp.Services.DTOS
 
         public string BaseCurrency { get; set; }
         public string TargetCurrency { get; set; }
-        public decimal Amount { get; set; }
+        public string Amount { get; set; }
     }
 }

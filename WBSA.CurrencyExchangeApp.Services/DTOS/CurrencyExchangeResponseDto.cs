@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace WBSA.CurrencyExchangeApp.Services.DTOS
         public string Privacy { get; set; }
         public QueryDto Query { get; set; }
         public InfoDto Info { get; set; }
-        public double Result { get; set; }
+        public string Result { get; set; }
+        public ErrorDto Error { get; set; }
     }
 }

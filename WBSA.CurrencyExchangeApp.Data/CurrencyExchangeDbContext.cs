@@ -7,7 +7,10 @@ namespace WBSA.CurrencyExchangeApp.Data
 {
     public class CurrencyExchangeDbContext:DbContext
     {
-        
+        public CurrencyExchangeDbContext()
+        {
+            
+        }
         public CurrencyExchangeDbContext(DbContextOptions<CurrencyExchangeDbContext> dbContextOptions)
             :base(dbContextOptions) 
         {

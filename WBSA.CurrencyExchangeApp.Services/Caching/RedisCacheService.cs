@@ -16,7 +16,7 @@ namespace WBSA.CurrencyExchangeApp.Services.Caching
         {
             var jsonData = _cache.GetString(key);
 
-            if (jsonData is null)
+            if (string.IsNullOrEmpty(jsonData))
                 return default(T);
 
             return JsonSerializer.Deserialize<T>(jsonData);

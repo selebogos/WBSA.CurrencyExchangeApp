@@ -1,26 +1,16 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using MapsterMapper;
+﻿using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MySqlX.XDevAPI.Common;
-using Org.BouncyCastle.Asn1.Ocsp;
-using Org.BouncyCastle.Utilities.Collections;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using WBSA.CurrencyExchangeApp.Data;
 using WBSA.CurrencyExchangeApp.Data.Entities;
 using WBSA.CurrencyExchangeApp.Services.Abstractions;
-using WBSA.CurrencyExchangeApp.Services.Caching;
 using WBSA.CurrencyExchangeApp.Services.DTOS;
 using WBSA.CurrencyExchangeApp.Services.Exceptions;
 using WBSA.CurrencyExchangeApp.Services.Helpers;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WBSA.CurrencyExchangeApp.Services
 {
@@ -42,7 +32,7 @@ namespace WBSA.CurrencyExchangeApp.Services
         }
         public async Task<CurrencyExchangeResponseDto> ConvertAndSaveAsync(CurrencyExchangeRequestDto request)
         {
-            
+            //Validate Currency codes and amount
             if (!CurrencyValidator.IsValidCurrencyCode(request.BaseCurrency))
             {
                 throw new CurrencyExchangeException($"{request.BaseCurrency} is not a valid currency code.");
@@ -51,7 +41,18 @@ namespace WBSA.CurrencyExchangeApp.Services
             {
                 throw new CurrencyExchangeException($"{request.TargetCurrency} is not a valid currency code.");
             }
-
+            else if (!Decimal.TryParse(request.Amount,out decimal amountToConvert))
+            {
+                throw new CurrencyExchangeException($" The amount must be a number greater than 0.0");
+            }
+            else if (Convert.ToDecimal(request.Amount)<=0)
+            {
+                throw new CurrencyExchangeException($" The amount must be greater than 0.0");
+            }
+            else if (request.TargetCurrency== request.BaseCurrency)
+            {
+                throw new CurrencyExchangeException($"target currency code must be different from base currency code.");
+            }
             var cacheKey = CreateInstance(request);
 
            bool isFound=hasInstanceId(cacheKey);
@@ -110,13 +111,13 @@ namespace WBSA.CurrencyExchangeApp.Services
                 var response = await httpClient.GetAsync($"{_currencyExchangeSettings.ConvertEndPoint}?from={request.BaseCurrency}&to={request.TargetCurrency}&amount={request.Amount}&access_key={_currencyExchangeSettings.CurrrencyAPIKey}");
                 if (!response.IsSuccessStatusCode)
                     throw new CurrencyExchangeException($"Cannot convert currency, status code: {response.StatusCode}");
-
-                var data = await response.Content.ReadFromJsonAsync<CurrencyExchangeResponseDto>() ?? null;
-
+                string jsonString = await response.Content.ReadAsStringAsync();
+                //var data = await response.Content.ReadFromJsonAsync<CurrencyExchangeResponseDto>() ?? null;
+                var data = JsonConvert.DeserializeObject<CurrencyExchangeResponseDto>(jsonString) ?? null;
                 if (data is null)
                     throw new CurrencyExchangeException($"Cannot convert currency");
-                else if (data.Info is null)
-                    throw new CurrencyExchangeException($"Failed convert currency");
+                else if (!data.Success)
+                    return data;
 
                 var currencyExchangeHistory = _mapper.Map<CurrencyExchangeHistory>(data);
 

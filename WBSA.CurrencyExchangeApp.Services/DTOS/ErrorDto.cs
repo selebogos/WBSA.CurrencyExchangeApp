@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WBSA.CurrencyExchangeApp.Services.DTOS
 {
-    public class QueryDto
+    public class ErrorDto
     {
-        public string From { get; set; }
-        public string To { get; set; }
-        public string Amount { get; set; }
+        public int code { get; set; }
+        public string info { get; set; }
     }
 }

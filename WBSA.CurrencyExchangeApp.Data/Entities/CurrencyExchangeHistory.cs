@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
 
 namespace WBSA.CurrencyExchangeApp.Data.Entities
 {
@@ -15,7 +16,7 @@ namespace WBSA.CurrencyExchangeApp.Data.Entities
         public bool Success { get; set; }
         public string Terms { get; set; }
         public string Privacy { get; set; }
-        public double Result { get; set; }
+        public string Result { get; set; }
 
         [ForeignKey("InformationId")]
         public virtual Information Info { get; set; }
