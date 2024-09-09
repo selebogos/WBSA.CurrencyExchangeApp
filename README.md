@@ -8,6 +8,7 @@
  2. If you are using docker for linux,please switch to windows since this project is setup for windows images
 
 #GetDotNet
+
  3. Please install .NET8 -you can download it here https://dotnet.microsoft.com/en-us/download/dotnet/8.0
  4. Please install Visual studio - You can can get it here https://visualstudio.microsoft.com/vs/community/
  
